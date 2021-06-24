@@ -64,7 +64,7 @@ def is_pic(file):
 if __name__ == '__main__':
     print("current path: " + os.path.curdir)
     compress(os.path.curdir)
-    if total_new_size == total_old_size:
+    if total_pic_old_size == total_pic_new_size:
         print("Done! But no pics were found in the directory.")
     else:
         print("compress done! All pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
