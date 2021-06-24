@@ -3,8 +3,8 @@ import os
 
 
 tinify.key = "j2h729DzSXz5ZfkTJ5Lq4dXZl8dcKSbQ"
-total_old_size = 0
-total_new_size = 0
+total_pic_old_size = 0
+total_pic_new_size = 0
 
 
 def get_file_size_KB(file):
@@ -22,39 +22,36 @@ def colored(r, g, b, text):
 
 
 def compress(path):
-    global total_old_size
-    global total_new_size
+    global total_pic_old_size
+    global total_pic_new_size
     if not os.path.isdir(path):
-        return
-    for file in os.listdir(path):
-        sub_file = os.path.join(path, file)
-        if os.path.isdir(file):
-            compress(sub_file)
+        file = path
+        old_file_size = get_file_size_KB(file)
+        old_file_size_str = str(round(old_file_size, 2))
+
+        if is_pic(file):
+            print(colored(255, 25, 25,
+                          "current file is pic: {0}, size: {1}KB, tinify it...".format(file,
+                                                                                       old_file_size_str)))
+
+            source = tinify.from_file(file)
+            source.to_file(file)
+
+            total_pic_old_size += old_file_size
+            new_file_size = get_file_size_KB(file)
+            total_pic_new_size += new_file_size
+
+            new_file_size_str = str(round(new_file_size, 2))
+            percent_str = str(round(100 - 100 * new_file_size / old_file_size, 2))
+
+            print(colored(255, 25, 25, "tinify done! now the pic size: {0}KB, shrunk by {1}%".format(
+                new_file_size_str, percent_str)))
         else:
-            old_file_size = get_file_size_KB(sub_file)
-            total_old_size += old_file_size
-
-            old_file_size_str = str(round(old_file_size, 2))
-
-            if is_pic(sub_file):
-                print(colored(255, 25, 25,
-                              "current file is pic: {0}, size: {1}KB, tinify it...".format(sub_file,
-                                                                                           old_file_size_str)))
-
-                source = tinify.from_file(sub_file)
-                source.to_file(sub_file)
-
-                new_file_size = get_file_size_KB(sub_file)
-                total_new_size += new_file_size
-
-                new_file_size_str = str(round(new_file_size, 2))
-                percent_str = str(round(100 - 100 * new_file_size / old_file_size, 2))
-
-                print(colored(255, 25, 25, "tinify done! now the pic size: {0}KB, shrunk by {1}%".format(
-                    new_file_size_str, percent_str)))
-            else:
-                total_new_size += old_file_size
-                print("current file: {0}, size: {1}KB".format(sub_file, old_file_size_str))
+            print("current file: {0}, size: {1}KB".format(file, old_file_size_str))
+    else:
+        for file in os.listdir(path):
+            sub_file = os.path.join(path, file)
+            compress(sub_file)
 
 
 def is_pic(file):
@@ -68,9 +65,9 @@ if __name__ == '__main__':
     print("current path: " + os.path.curdir)
     compress(os.path.curdir)
     if total_new_size == total_old_size:
-        print("compress done! But no pics were found in the directory.")
+        print("Done! But no pics were found in the directory.")
     else:
         print("compress done! All pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
-            round(total_old_size, 2), round(total_old_size / 1024, 2), round(total_new_size, 2),
-            round(total_new_size / 1024, 2), str(round(100 - 100 * total_new_size / total_old_size, 2))))
+            round(total_pic_old_size, 2), round(total_pic_old_size / 1024, 2), round(total_pic_new_size, 2),
+            round(total_pic_new_size / 1024, 2), str(round(100 - 100 * total_pic_new_size / total_pic_old_size, 2))))
 
