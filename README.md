@@ -1,5 +1,5 @@
 # shrinkPics
-This is a script for shrinking pictures recursively in a directory, based on [tinypng](https://tinypng.com/).
+This is a script for shrinking pictures recursively in a directory, based on [tinypng](https://tinypng.com/), using a thread pool to make it faster. 
 
 Before you use this script, go to [tinypng](https://tinypng.com/developers) and get an API key.
 
