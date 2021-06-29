@@ -11,8 +11,11 @@ total_pic_old_size = 0
 total_pic_new_size = 0
 total_pic_num = 0
 
-API_KEY_CACHE_PATH = "key_cache.txt"
+# all thread pool tasks futures
 futures = []
+
+# tinypng API key cache file
+API_KEY_CACHE_PATH = "key_cache.txt"
 
 # indicate weather the program running into error
 error = False
@@ -135,6 +138,7 @@ if __name__ == '__main__':
 
     # wait until all tasks done
     concurrent.futures.wait(futures)
+
     if error:
         print(colored(255, 25, 25, "\nError occurred, please check if you run this program properly."))
     elif total_pic_num == 0:
