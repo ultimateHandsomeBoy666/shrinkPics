@@ -9,6 +9,8 @@ import os
 # tinify.key = "j2h729DzSXz5ZfkTJ5Lq4dXZl8dcKSbQ"
 total_pic_old_size = 0
 total_pic_new_size = 0
+total_pic_num = 0
+
 API_KEY_CACHE_PATH = "key_cache.txt"
 futures = []
 
@@ -43,6 +45,7 @@ def colored(r, g, b, text):
 def compress(path, thread_pool):
     global total_pic_old_size
     global total_pic_new_size
+    global total_pic_num
     global futures
 
     if not os.path.isdir(path):
@@ -54,11 +57,11 @@ def compress(path, thread_pool):
         total_pic_old_size += old_file_size
 
         if is_pic(file):
+            total_pic_num += 1
 
             future = thread_pool.submit(tiny_task, file, old_file_size)
             futures.append(future)
             future.add_done_callback(tiny_task_result_callback)
-
         else:
             print("current file: {0}, size: {1}KB".format(file, old_file_size_str))
     else:
@@ -134,16 +137,15 @@ if __name__ == '__main__':
     concurrent.futures.wait(futures)
     if error:
         print(colored(255, 25, 25, "\nError occurred, please check if you run this program properly."))
+    elif total_pic_num == 0:
+        print("\nDone! But no pics were found in the directory.")
     else:
-        if total_pic_old_size == total_pic_new_size:
-            print("\nDone! But no pics were found in the directory.")
-        else:
-            print(colored(25, 255, 25,
-                          "\nCompress done! All pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
-                              round(total_pic_old_size, 2),
-                              round(total_pic_old_size / 1024, 2), round(total_pic_new_size, 2),
-                              round(total_pic_new_size / 1024, 2),
-                              str(round(100 - 100 * total_pic_new_size / total_pic_old_size, 2)))))
+        print(colored(25, 255, 25,
+                      "\nCompress done! All pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
+                          round(total_pic_old_size, 2),
+                          round(total_pic_old_size / 1024, 2), round(total_pic_new_size, 2),
+                          round(total_pic_new_size / 1024, 2),
+                          str(round(100 - 100 * total_pic_new_size / total_pic_old_size, 2)))))
 
 
 
