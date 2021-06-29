@@ -7,7 +7,7 @@ import os
 # tinify.key = "j2h729DzSXz5ZfkTJ5Lq4dXZl8dcKSbQ"
 total_pic_old_size = 0
 total_pic_new_size = 0
-API_KEY_CACHE_PATH = "key_cache"
+API_KEY_CACHE_PATH = "key_cache.txt"
 
 
 def get_file_size_KB(file):
@@ -70,11 +70,13 @@ if __name__ == '__main__':
         if not os.path.exists(API_KEY_CACHE_PATH):
             raise Exception("no API key input and no cached key found!")
         else:
-            tinify.key = sys.argv[1]
+            with open("./" + API_KEY_CACHE_PATH, 'r') as f:
+                key = f.readline()[0]
+                tinify.key = key
     else:
         key = sys.argv[1]
         tinify.key = key
-        with open("/" + API_KEY_CACHE_PATH, 'rw') as f:
+        with open("./" + API_KEY_CACHE_PATH, 'w+') as f:
             f.write(key)
     print("current path: " + os.path.curdir)
     compress(os.path.curdir)
