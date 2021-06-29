@@ -33,13 +33,15 @@ def compress(path):
         old_file_size_str = str(round(old_file_size, 2))
 
         if is_pic(file):
-            print(colored(255, 25, 25,
+            print(colored(25, 25, 255,
                           "current file is pic: {0}, size: {1}KB, tinify it...".format(file,
                                                                                        old_file_size_str)))
 
-            source = tinify.from_file(file)
-            source.to_file(file)
-
+            try:
+                source = tinify.from_file(file)
+                source.to_file(file)
+            except tinify.AccountError:
+                raise Exception(colored(255, 25, 25, "your API key is invalid! try a new one!"))
             total_pic_old_size += old_file_size
             new_file_size = get_file_size_KB(file)
             total_pic_new_size += new_file_size
@@ -47,7 +49,7 @@ def compress(path):
             new_file_size_str = str(round(new_file_size, 2))
             percent_str = str(round(100 - 100 * new_file_size / old_file_size, 2))
 
-            print(colored(255, 25, 25, "tinify done! now the pic size: {0}KB, shrunk by {1}%".format(
+            print(colored(25, 25, 255, "tinify done! now the pic size: {0}KB, shrunk by {1}%".format(
                 new_file_size_str, percent_str)))
         else:
             print("current file: {0}, size: {1}KB".format(file, old_file_size_str))
