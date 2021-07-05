@@ -57,10 +57,9 @@ def compress(path, thread_pool):
         old_file_size = get_file_size_KB(file)
         old_file_size_str = str(round(old_file_size, 2))
 
-        total_pic_old_size += old_file_size
-
         if is_pic(file):
             total_pic_num += 1
+            total_pic_old_size += old_file_size
 
             future = thread_pool.submit(tiny_task, file, old_file_size)
             futures.append(future)
@@ -145,11 +144,11 @@ if __name__ == '__main__':
         print("\nDone! But no pics were found in the directory.")
     else:
         print(colored(255, 198, 35,
-                      "\nCompress done! All pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
+                      "\nCompress done! All {5} pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
                           round(total_pic_old_size, 2),
                           round(total_pic_old_size / 1024, 2), round(total_pic_new_size, 2),
                           round(total_pic_new_size / 1024, 2),
-                          str(round(100 - 100 * total_pic_new_size / total_pic_old_size, 2)))))
+                          str(round(100 - 100 * total_pic_new_size / total_pic_old_size, 2)), total_pic_num)))
 
 
 
