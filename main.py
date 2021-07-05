@@ -144,7 +144,7 @@ if __name__ == '__main__':
     elif total_pic_num == 0:
         print("\nDone! But no pics were found in the directory.")
     else:
-        print(colored(25, 255, 25,
+        print(colored(255, 198, 35,
                       "\nCompress done! All pics shrunk from {0}KB({1}MB) to {2}KB({3}MB), shrunk by {4}%.".format(
                           round(total_pic_old_size, 2),
                           round(total_pic_old_size / 1024, 2), round(total_pic_new_size, 2),
