@@ -110,7 +110,7 @@ def tiny_task_result_callback(future):
     new_file_size_str = str(round(new_file_size, 2))
     percent_str = str(round(100 - 100 * new_file_size / old_file_size, 2))
 
-    print(colored(25, 255, 25, "file {0} tinify done! now the pic size: {1}KB, shrunk by {2}%".format(
+    print(colored(25, 255, 25, "\nfile {0} tinify done! now the pic size: {1}KB, shrunk by {2}%".format(
         file, new_file_size_str, percent_str)))
 
 
