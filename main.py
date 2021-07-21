@@ -79,10 +79,8 @@ def is_pic(file):
 
 
 def tiny_task(file, old_file_size):
-    print(colored(25, 255, 25,
-                  "\ncurrent file is pic: {0}, size: {1}KB, tinify it...".format(file, str(round(old_file_size, 2)))))
-    print(colored(25, 255, 25,
-                  "current tiny thread is {0}".format(threading.current_thread().name)))
+    print("\ncurrent file is pic: {0}, size: {1}KB, tinify it...".format(file, str(round(old_file_size, 2))))
+    print("current tiny thread is {0}".format(threading.current_thread().name))
     try:
         source = tinify.from_file(file)
         source.to_file(file)
